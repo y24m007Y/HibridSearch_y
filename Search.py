@@ -29,7 +29,6 @@ class Searcher():
         self.tagger = MeCab.Tagger(f"-Owakati {unidic.DICDIR}")
     
     def set_data(self, data):
-        self.title = data.title
         self.url = data.url
         self.contents = data.content
         return
