@@ -30,6 +30,7 @@ class Searcher():
     
     def set_data(self, data):
         self.url = data.url
+        self.title = data.title
         self.contents = data.content
         return
     
@@ -119,8 +120,21 @@ class hibrid(Searcher):
         self.labse = laai(filename)
         self.created()
 
-    def created():
+    def created(self):
         return "Created!"
+    
+    def get_score(self, score_k, score_l, k):
+        return  (1/(score_k+k)) + (1/(score_l+k))
+
+    def simulate(self, query, k=60):
+        keyword_score = self.bm.simulate(query)
+        lm_score = self.labse.simulate(query)
+        keyword_rank = np.argsort(keyword_score)[::-1]+1
+        lm_lank = np.argsort(lm_score)[::-1]+1
+        del keyword_score, lm_score
+        scores = np.array([self.get_score(key, llm, k) for key,llm in zip(keyword_rank, lm_lank)])
+        return scores
+
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
